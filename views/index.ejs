@@ -5,9 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Css/styles.css">
+    <script src="https://kit.fontawesome.com/b8b6313378.js" crossorigin="anonymous"></script>
+
     <title>Projecto Quimica</title>
 </head>
 <body>
@@ -20,16 +22,24 @@
         <div id="container-form">
             <form action="/" method="post" id="primary-form">
                 <div class="container-form-elements">
-                    <input type="text" name="elemnto1" id="inputElemento1" placeholder="Nombre o numero atomico">
+                    <h3 class="title-input">Primer elemento</h3>
+                    <input type="text" name="elemento1" id="inputElemento1" placeholder="Nombre o numero atomico" autofocus="true" autocomplete="off">
                 </div>
                 
                 <div class="container-form-elements">
-                    <input type="text" name="elemento2" id="inputElemento2" placeholder="Nombre o numero atomico">
+                    <h3 class="title-input">Segundo elemento</h3>
+                    <input type="text" name="elemento2" id="inputElemento2" placeholder="Nombre o numero atomico" autocomplete="off">
                 </div>
                 <button type="submit" id="verify">Verificar tipo de enlace</button>
                 
             </form>
         </div>
+
+        <section id="information">
+            <div class="container-information">
+                <h2><%= tipoEnlace %></h2>
+            </div>
+        </section>
         
     </div>
     
