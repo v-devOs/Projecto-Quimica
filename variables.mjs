@@ -1,4 +1,4 @@
-let elemento={
+export let elemento={
     _id: null,
     nombre: null,
     familia: null,

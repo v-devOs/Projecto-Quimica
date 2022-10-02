@@ -1,38 +1,29 @@
 import mongoose from "mongoose";
 
-async function fin(){
-    const ex = await Fruit.findOne({name: "Apple"}).exec();
-    mongoose.connection.close();
-    console.log(ex.name);
+
+mongoose.connect('mongodb://localhost:27017/fruitsDB');
+const elementSchema = mongoose.Schema({
+    _id: Number,
+    name: String,
+    rating: Number
+}) 
+const Fruit = mongoose.model("Fruit", elementSchema);
+
+export async function getDataFromDatabase(idNameElement){
+    const infoElement = await consultDatabase(idNameElement);
+    return infoElement;
 }
 
-fin();
-
-mongoose.connect("mongodb://localhost:27017/tablePeriodicDB");
-
-export function getDataFromDataBase(elementName){
-
-    const elementSchema = new mongoose.Schema({
-        _id: Number,
-        nombre: String,
-        familia: String,
-        descripcion: String
-    });
-
-    const Element = mongoose.model("Element", elementSchema);
-
-    let elementData
-
-
-    Element.findOne({name: elementName}, (err, element)=>{
-        err ? console.log(err) : elementData = element;
+const consultDatabase = (idNameElement) =>{
+    return new Promise((resolve, reject)=>{
+        Fruit.findOne({name: idNameElement}, function(err, elementFetched){
+            if(err){
+                console.log(err);
+            }
+            else{
+                mongoose.connection.close();
+                resolve(elementFetched);
+            }
+        })
     })
-
-    mongoose.disconnect();
-    
-    return elementData;
-}
-
-export function setDataInDataBase(){
-    
 }

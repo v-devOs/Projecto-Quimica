@@ -1,11 +1,9 @@
 import express  from 'express';
 import bodyParser from 'body-parser';
 import { enlace } from './variables.mjs';
-import { getDataFromDataBase } from './utilidades.mjs';
+import { getDataFromDatabase } from './utilidades.mjs';
 
 const app = express();
-
-
 
 let hayInformacion = false;
 
@@ -32,13 +30,16 @@ app.post('/', (req, res)=>{
     const nombreIdElemento2 = req.body.elemento2;
     console.log("Datos guardados correctamente");
 
-    // dataElemento1 = getDataFromDataBase(nombreIdElemento1);
-    // dataElemento2 = getDataFromDataBase(nombreIdElemento2);
+    const infoElement1 = getDataFromDatabase(nombreIdElemento1).then((result)=>{
+        info = result;
+        console.log(info);
+    });
+    let info;
 
-
+    console.log(info);
     
 
-
+    
 
 })
 
