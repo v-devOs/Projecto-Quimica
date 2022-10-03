@@ -1,8 +1,9 @@
-export let elemento={
+const elemento={
     _id: null,
-    nombre: null,
-    familia: null,
-    descripcion: null
+    nameElement: null,
+    family: null,
+    typeElement: null,
+    info: null
 }
 export let enlace = {
     tipoEnlace: null,
@@ -16,3 +17,7 @@ export let enlace = {
         }
     ]
 }
+
+
+export const indexInfoElementOne = 0;
+export const indexInfoElementTwo = 1;

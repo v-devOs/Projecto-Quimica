@@ -9,21 +9,48 @@ const elementSchema = mongoose.Schema({
 }) 
 const Fruit = mongoose.model("Fruit", elementSchema);
 
-export async function getDataFromDatabase(idNameElement){
-    const infoElement = await consultDatabase(idNameElement);
-    return infoElement;
+export async function getDataFromDatabase(idNameElementOne, idNameElementTwo){
+    const infoElementOne = await consultDatabase(idNameElementOne);
+    const infoElementTwo = await consultDatabase(idNameElementTwo);
+    const infoFethed = [infoElementOne, infoElementTwo];
+    mongoose.connection.close();
+    return infoFethed;
 }
-
-const consultDatabase = (idNameElement) =>{
+const consultDatabase = (idNameElementOne) =>{
     return new Promise((resolve, reject)=>{
-        Fruit.findOne({name: idNameElement}, function(err, elementFetched){
-            if(err){
-                console.log(err);
-            }
-            else{
-                mongoose.connection.close();
-                resolve(elementFetched);
-            }
+        Fruit.findOne({name: idNameElementOne}, function(err, elementFetched){
+            err ? console.log(err) : resolve(elementFetched);
         })
     })
+}
+
+export function getTypeLinkElements(elementOne, elementTwo){
+    if(elementOne.typeElement === "Metal Transiscion" && elementTwo.typeElement === "Metal Transicion"){
+        return "Metalico";
+    }
+    else if(elementOne.typeElement === "Metal" && elementTwo.typeElement === "No metal"){
+        return "Ionico";
+    }
+    else if(elementOne.typeElement === "Metal" && elementTwo.typeElement === "No metal"){
+        return "Covalente"
+    }
+}
+
+export function setInfoTypeLink(typeLink){
+    if(typeLink === "Covalente"){
+        return "Info enlace Covalente";
+    }
+    else if(typeLink === "Metalico"){
+        return "Info Enlace Metalico";
+    }
+    else if(typeLink === "Ionico"){
+        return "Info enlace Ionico";
+    }
+    else{
+        return "No hay info sobre este tipo de enlace";
+    }
+}
+
+export function setDataInDatabase(){
+    
 }

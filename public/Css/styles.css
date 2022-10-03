@@ -20,15 +20,6 @@ input{
     margin: 5% 5% 0 5%;
 }
 
-.container-form-elements{
-    display: block;
-}
-
-.title-input{
-    display: inline-block;
-}
-
-
 #verify{
     margin: 3%;
     background-color: #47B5FF;
