@@ -1,0 +1,35 @@
+{
+    "tablePeriodic" : [
+        {
+            "_id": 1,
+            "nameElement": "Hidrogeno",
+            "family": 1,
+            "typeElement": "No metal",
+            "info": "Primer elemento de la tabla periodica"
+        },{
+            "_id": 2,
+            "nameElement": "Hidrogeno",
+            "family": 1,
+            "typeElement": "No metal",
+            "info": "Primer elemento de la tabla periodica"
+        },{
+            "_id": 3,
+            "nameElement": "Hidrogeno",
+            "family": 1,
+            "typeElement": "No metal",
+            "info": "Primer elemento de la tabla periodica"
+        },{
+            "_id": 4,
+            "nameElement": "Hidrogeno",
+            "family": 1,
+            "typeElement": "No metal",
+            "info": "Primer elemento de la tabla periodica"
+        },{
+            "_id": 5,
+            "nameElement": "Hidrogeno",
+            "family": 1,
+            "typeElement": "No metal",
+            "info": "Primer elemento de la tabla periodica"
+        }
+    ]
+}

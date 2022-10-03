@@ -27,11 +27,12 @@ app.get('/', (req,res)=>{
 })
 
 app.post('/', (req, res)=>{
-    const nombreIdElemento1 = req.body.elemento1;
-    const nombreIdElemento2 = req.body.elemento2;
+    const idNameElementOne = req.body.elemento1;
+    const idNameElementTwo = req.body.elemento2;
     console.log("Datos guardados correctamente");
-    if(nombreIdElemento1 === "AdminUriel" && nombreIdElemento2 === "paswordUriel"){
-        setDataInDatabase
+    if(idNameElementOne === "AdminUriel" && idNameElementTwo === "paswordUriel"){
+        setDataInDatabase();
+        res.redirect("/");
     }else{
         getDataFromDatabase(nombreIdElemento1, nombreIdElemento2).then((fetchedData)=>{
             const fetchedDataElementOne = fetchedData[indexInfoElementOne];
@@ -41,13 +42,9 @@ app.post('/', (req, res)=>{
             EnlaceElementos.tipoEnlace = getTypeLinkElements(fetchedDataElementOne, fetchedDataElementTwo);
             EnlaceElementos.informacion = setInfoTypeLink(EnlaceElementos.tipoEnlace);
             hayInformacion = true;
-            
             res.redirect('/');
         })
     }
-    
-
-    
 })
 
 app.listen(3000, ()=>{

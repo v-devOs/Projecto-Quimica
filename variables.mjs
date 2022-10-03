@@ -1,3 +1,5 @@
+export const indexInfoElementOne = 0;
+export const indexInfoElementTwo = 1;
 const elemento={
     _id: null,
     nameElement: null,
@@ -17,7 +19,3 @@ export let enlace = {
         }
     ]
 }
-
-
-export const indexInfoElementOne = 0;
-export const indexInfoElementTwo = 1;
