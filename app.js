@@ -29,12 +29,11 @@ app.get('/', (req,res)=>{
 app.post('/', (req, res)=>{
     const idNameElementOne = req.body.elemento1;
     const idNameElementTwo = req.body.elemento2;
-    console.log("Datos guardados correctamente");
     if(idNameElementOne === "AdminUriel" && idNameElementTwo === "paswordUriel"){
         setDataInDatabase();
         res.redirect("/");
     }else{
-        getDataFromDatabase(nombreIdElemento1, nombreIdElemento2).then((fetchedData)=>{
+        getDataFromDatabase(idNameElementOne, idNameElementTwo).then((fetchedData)=>{
             const fetchedDataElementOne = fetchedData[indexInfoElementOne];
             const fetchedDataElementTwo = fetchedData[indexInfoElementTwo];
             EnlaceElementos.informacionElementos[indexInfoElementOne] = fetchedDataElementOne;

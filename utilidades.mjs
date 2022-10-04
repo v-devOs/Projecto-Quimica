@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import fs from "fs";
 mongoose.connect('mongodb://localhost:27017/tablePeriodicDB');
+
 const elementSchema = mongoose.Schema({
     _id: Number,
     nameElement: String,
@@ -8,7 +9,6 @@ const elementSchema = mongoose.Schema({
     typeElement: String,
     info: String
 }) 
-
 const Element = mongoose.model("Element", elementSchema)
 export async function getDataFromDatabase(idNameElementOne, idNameElementTwo){
     const infoElementOne = await consultDatabase(idNameElementOne);
@@ -17,29 +17,28 @@ export async function getDataFromDatabase(idNameElementOne, idNameElementTwo){
     mongoose.connection.close();
     return infoFethed;
 }
-const consultDatabase = (idNameElementOne) =>{
+const consultDatabase = (idNameElement) =>{
     return new Promise((resolve, reject)=>{
-        Element.findOne({name: idNameElementOne}, function(err, elementFetched){
+        Element.findOne({nameElement: idNameElement}, function(err, elementFetched){
             err ? console.log(err) : resolve(elementFetched);
         })
     })
 }
-
 export function getTypeLinkElements(elementOne, elementTwo){
+    let tipoEnlace = `El tipo de enlace entre los elementos ${elementOne.nameElement} y ${elementTwo.nameElement} es: `;
     if(elementOne.typeElement === "Metal" && elementTwo.typeElement === "Metal"){
-        return "Metalico";
+        return tipoEnlace + "Metalico";
     }
     else if(elementOne.typeElement === "Metal" && elementTwo.typeElement === "No metal"){
-        return "Ionico";
+        return tipoEnlace + "Ionico";
     }
-    else if(elementOne.typeElement === "No Metal" && elementTwo.typeElement === "No metal"){
-        return "Covalente"
+    else if(elementOne.typeElement === "No metal" && elementTwo.typeElement === "No metal"){
+        return tipoEnlace + "Covalente"
     }
     else{
-        return "Enlace inexistente";
+        return tipoEnlace + "Enlace inexistente";
     }
 }
-
 export function setInfoTypeLink(typeLink){
     if(typeLink === "Covalente"){
         return "Info enlace Covalente";
@@ -54,7 +53,6 @@ export function setInfoTypeLink(typeLink){
         return "No hay info sobre este tipo de enlace";
     }
 }
-
 export function setDataInDatabase(){
     mongoose.connect('mongodb://localhost:27017/tablePeriodicDB');
     const dirNameFile = "TablePeriodicInfo.json";
