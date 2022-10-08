@@ -1,7 +1,8 @@
 import express  from 'express';
 import bodyParser from 'body-parser';
-import { getDataFromDatabase, getTypeLinkElements, setDataInDatabase, setInfoTypeLink } from './utilidades.mjs';
+import { obtenerInformacionEnlaceAtomico, obtenerTipoEnlaceAtomico,  } from './utilidades.mjs';
 import { enlace, indexInfoElementOne, indexInfoElementTwo } from './variables.mjs';
+import { BaseDatos } from './DataBase.mjs';
 
 const app = express();
 
@@ -29,19 +30,26 @@ app.get('/', (req,res)=>{
 app.post('/', (req, res)=>{
     const idNameElementOne = req.body.elemento1;
     const idNameElementTwo = req.body.elemento2;
+    const elementosConsultar = [idNameElementOne, idNameElementTwo];
+    const dataBase = new BaseDatos("mongodb://localhost:27017/tablePeriodicDB");
+
     if(idNameElementOne === "AdminUriel" && idNameElementTwo === "paswordUriel"){
-        setDataInDatabase();
-        res.redirect("/");
+        dataBase.conectarBaseDatos().then(()=>{
+            dataBase.guardarInformacionBaseDatos("TablePeriodicInfo.json");
+            res.redirect("/");
+        })
+        
     }else{
-        getDataFromDatabase(idNameElementOne, idNameElementTwo).then((fetchedData)=>{
-            const fetchedDataElementOne = fetchedData[indexInfoElementOne];
-            const fetchedDataElementTwo = fetchedData[indexInfoElementTwo];
-            EnlaceElementos.informacionElementos[indexInfoElementOne] = fetchedDataElementOne;
-            EnlaceElementos.informacionElementos[indexInfoElementTwo] = fetchedDataElementTwo;
-            EnlaceElementos.tipoEnlace = getTypeLinkElements(fetchedDataElementOne, fetchedDataElementTwo);
-            EnlaceElementos.informacion = setInfoTypeLink(EnlaceElementos.tipoEnlace);
-            hayInformacion = true;
-            res.redirect('/');
+        dataBase.conectarBaseDatos().then(()=>{
+            dataBase.obtenerInformacion(elementosConsultar).then((infoElementosConsultados)=>{
+                const infoElementoUnoConsultada = infoElementosConsultados[indexInfoElementOne];
+                const infoElementoDosConsultada = infoElementosConsultados[indexInfoElementTwo];
+                EnlaceElementos.tipoEnlace = obtenerTipoEnlaceAtomico(infoElementoUnoConsultada, infoElementoDosConsultada);
+                EnlaceElementos.informacion = obtenerInformacionEnlaceAtomico(EnlaceElementos.tipoEnlace);
+                hayInformacion = true;
+                dataBase.desconectarBaseDatos();
+                res.redirect("/");
+            })
         })
     }
 })

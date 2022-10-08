@@ -1,30 +1,7 @@
-import mongoose from "mongoose";
 import fs from "fs";
-mongoose.connect('mongodb://localhost:27017/tablePeriodicDB');
+import { Element } from "./ModeloObjetosDB.mjs";
 
-const elementSchema = mongoose.Schema({
-    _id: Number,
-    nameElement: String,
-    family: Number,
-    typeElement: String,
-    info: String
-}) 
-const Element = mongoose.model("Element", elementSchema)
-export async function getDataFromDatabase(idNameElementOne, idNameElementTwo){
-    const infoElementOne = await consultDatabase(idNameElementOne);
-    const infoElementTwo = await consultDatabase(idNameElementTwo);
-    const infoFethed = [infoElementOne, infoElementTwo];
-    mongoose.connection.close();
-    return infoFethed;
-}
-const consultDatabase = (idNameElement) =>{
-    return new Promise((resolve, reject)=>{
-        Element.findOne({nameElement: idNameElement}, function(err, elementFetched){
-            err ? console.log(err) : resolve(elementFetched);
-        })
-    })
-}
-export function getTypeLinkElements(elementOne, elementTwo){
+export function obtenerTipoEnlaceAtomico(elementOne, elementTwo){
     let tipoEnlace = `El tipo de enlace entre los elementos ${elementOne.nameElement} y ${elementTwo.nameElement} es: `;
     if(elementOne.typeElement === "Metal" && elementTwo.typeElement === "Metal"){
         return tipoEnlace + "Metalico";
@@ -39,7 +16,7 @@ export function getTypeLinkElements(elementOne, elementTwo){
         return tipoEnlace + "Enlace inexistente";
     }
 }
-export function setInfoTypeLink(typeLink){
+export function obtenerInformacionEnlaceAtomico(typeLink){
     if(typeLink === "Covalente"){
         return "Info enlace Covalente";
     }
@@ -53,35 +30,21 @@ export function setInfoTypeLink(typeLink){
         return "No hay info sobre este tipo de enlace";
     }
 }
-export function setDataInDatabase(){
-    mongoose.connect('mongodb://localhost:27017/tablePeriodicDB');
-    const dirNameFile = "TablePeriodicInfo.json";
-    const dataTablePeriodic = readDataTablePeriodic(dirNameFile);
-    const elementsToSaveDatabase = createArrayWithScheema(dataTablePeriodic);
-    Element.insertMany(elementsToSaveDatabase, (err)=>{
-        if(err){console.log(err);}
-        else{
-            console.log("Info save on Database");
-            mongoose.connection.close();
-        }
-    })
+export function leerInfo(direccionArchivo){
+    const informacionLeida = JSON.parse((fs.readFileSync(direccionArchivo)));
+    return informacionLeida;
 }
-function readDataTablePeriodic(dirNameFile){
-    const rawData = fs.readFileSync(dirNameFile);
-    const dataTablePeriodic = JSON.parse(rawData);
-    return dataTablePeriodic;
+export function crearArregloModeloBaseDatos(objetosLeidos){
+    const arregloObjetosGuardar = objetosLeidos.tablePeriodic.map(crearObjeto);
+    return arregloObjetosGuardar;
 }
-function createArrayWithScheema(dataTablePeriodic){
-    const arrayScheemaElements = dataTablePeriodic.tablePeriodic.map(createObject);
-    return arrayScheemaElements;
-}
-function createObject(elementInfo){
+function crearObjeto(informacionObjeto){
     const element = new Element({
-        _id: elementInfo._id,
-        nameElement: elementInfo.nameElement,
-        family: elementInfo.family,
-        typeElement: elementInfo.typeElement,
-        info: elementInfo.info
+        _id: informacionObjeto._id,
+        nameElement: informacionObjeto.nameElement,
+        family: informacionObjeto.family,
+        typeElement: informacionObjeto.typeElement,
+        info: informacionObjeto.info
     })
     return element
 }
